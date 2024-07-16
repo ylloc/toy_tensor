@@ -16,6 +16,13 @@ mod tests {
 
     #[test]
     fn test_ci_cd() {
-        assert!(true);
+        let mut tensor = Tensor::new([10, 20, 30], 3);
+        let mut tensor_view = tensor.as_unique();
+        tensor_view[[1, 1, 1]] = 333;
+
+        assert!(
+            tensor[[1, 1, 1]] == 333,
+            "because `tensor_view` is view above `tensor` data"
+        );
     }
 }
