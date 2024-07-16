@@ -72,6 +72,14 @@ fn calculate_position<const DIM: usize>(strides: &[usize; DIM], index: &[usize; 
     return pos;
 }
 
+fn calculate_strides<const DIM: usize>(shape: &[usize; DIM]) -> [usize; DIM] {
+    let mut strides = [1; DIM];
+    for i in (0..DIM - 1).rev() {
+        strides[i] = strides[i + 1] * shape[i];
+    }
+    strides
+}
+
 impl<'a, T: Copy + Clone, const DIM: usize> Index<[usize; DIM]> for TensorView<'a, T, DIM> {
     type Output = T;
 
@@ -133,14 +141,10 @@ impl<'a, T: Copy + Clone, const DIM: usize> TensorView<'a, T, DIM> {
     pub fn reshape<const NDIM: usize>(self, new_shape: [usize; NDIM]) -> TensorView<'a, T, NDIM> {
         assert!(new_shape.iter().product::<usize>() == self.reference.size);
 
-        let mut new_strides = [1; NDIM];
-        for i in (0..NDIM - 1).rev() {
-            new_strides[i] = new_strides[i + 1] * new_shape[i];
-        }
         return TensorView {
             reference: self.reference,
+            strides: calculate_strides(&new_shape),
             shape: new_shape,
-            strides: new_strides,
         };
     }
 }
@@ -152,13 +156,9 @@ impl<'a, T: Copy + Clone, const DIM: usize> MutTensorView<'a, T, DIM> {
     ) -> MutTensorView<'a, T, NDIM> {
         assert!(new_shape.iter().product::<usize>() == self.reference.size);
 
-        let mut new_strides = [1; NDIM];
-        for i in (0..NDIM - 1).rev() {
-            new_strides[i] = new_strides[i + 1] * new_shape[i];
-        }
         return MutTensorView {
             reference: self.reference,
-            strides: new_strides,
+            strides: calculate_strides(&new_shape),
             shape: new_shape,
         };
     }
