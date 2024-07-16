@@ -131,7 +131,7 @@ impl<T: Copy + Clone, const DIM: usize> IndexMut<[usize; DIM]> for Tensor<T, DIM
 
 impl<'a, T: Copy + Clone, const DIM: usize> TensorView<'a, T, DIM> {
     pub fn reshape<const NDIM: usize>(self, new_shape: [usize; NDIM]) -> TensorView<'a, T, NDIM> {
-        assert!(new_shape.iter().product::<usize>() == self.shape.iter().product::<usize>());
+        assert!(new_shape.iter().product::<usize>() == self.reference.size);
 
         let mut new_strides = [1; NDIM];
         for i in (0..NDIM - 1).rev() {
@@ -150,7 +150,7 @@ impl<'a, T: Copy + Clone, const DIM: usize> MutTensorView<'a, T, DIM> {
         self,
         new_shape: [usize; NDIM],
     ) -> MutTensorView<'a, T, NDIM> {
-        assert!(new_shape.iter().product::<usize>() == self.shape.iter().product::<usize>());
+        assert!(new_shape.iter().product::<usize>() == self.reference.size);
 
         let mut new_strides = [1; NDIM];
         for i in (0..NDIM - 1).rev() {
