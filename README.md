@@ -10,5 +10,7 @@ fn main() {
         tensor[[1, 1, 1]] == 333,
         "because `tensor_view` is view above `tensor` data"
     );
+
+    let owned = tensor_view.to_owned(); // creates a copy of `tensor`
 }
 ```
