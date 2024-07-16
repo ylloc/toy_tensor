@@ -65,11 +65,9 @@ impl<'a, T: Copy + Clone, const DIM: usize> TensorView<'a, T, DIM> {
 }
 
 fn calculate_position<const DIM: usize>(strides: &[usize; DIM], index: &[usize; DIM]) -> usize {
-    let mut pos = 0usize;
-    for i in 0..DIM {
-        pos += strides[DIM - i - 1] * index[i];
-    }
-    return pos;
+    (0..DIM)
+        .map(|i| strides[DIM - i - 1] * index[i])
+        .sum::<usize>()
 }
 
 fn calculate_strides<const DIM: usize>(shape: &[usize; DIM]) -> [usize; DIM] {
