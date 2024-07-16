@@ -21,7 +21,7 @@ jobs:
       with:
         toolchain: stable
         override: true
-    - name: Navigate to project directory
-      run: cd toy_tensor
-    - name: Run tests
-      run: cargo test --verbose
+    - name: Navigate to project directory and run tests
+      run: |
+        cd toy_tensor/
+        cargo test --verbose
