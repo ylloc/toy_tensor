@@ -7,7 +7,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
+    fn starting_test() {
         let mut tensor = Tensor::new([10, 20, 30], 3);
         let tensor_view = tensor.as_unique();
         let mut tensor_reshaped = tensor_view.reshape([200, 30]).to_owned();
