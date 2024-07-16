@@ -13,4 +13,9 @@ mod tests {
         let mut tensor_reshaped = tensor_view.reshape([200, 30]).to_owned();
         tensor_reshaped[[1, 1]] = 2;
     }
+
+    #[test]
+    fn test_ci_cd() {
+        assert!(true);
+    }
 }
